@@ -35,6 +35,13 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $tessera->stagione }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">€ {{ number_format($tessera->prezzo, 2, ',', '.') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"> <a href="{{ route('admin.tipi-tessera.edit', $tessera) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-200">Modifica</a>
+                                <form class="inline-block ml-4" method="POST" action="{{ route('admin.tipi-tessera.destroy', $tessera) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-200" onclick="return confirm('Sei sicuro di voler eliminare questa tessera? L\'azione è irreversibile!')">
+                                        Elimina
+                                    </button>
+                                </form>
                             </tr>
                         @empty
                             <tr>

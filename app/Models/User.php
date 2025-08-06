@@ -56,4 +56,12 @@ class User extends Authenticatable
             'is_admin' => 'boolean',
         ];
     }
+
+    /**
+     * Un utente può avere molti tesseramenti.
+     */
+    public function tesseramenti(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\Tesseramento::class);
+    }
 }

@@ -12,9 +12,26 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    @if (Auth::user() && Auth::user()->is_admin)
+                        {{-- MENU PER L'ADMIN --}}
+                        <x-nav-link :href="route('admin.tesseramenti.index')" :active="request()->routeIs('admin.tesseramenti.*')">
+                            Gestione Tesseramenti
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.tipi-tessera.index')" :active="request()->routeIs('admin.tipi-tessera.*')">
+                            Gestione Tipi Tessera
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.trasferte.index')" :active="request()->routeIs('admin.trasferte.*')">
+                            Gestione Trasferte
+                        </x-nav-link>
+                    @else
+                        {{-- MENU PER L'UTENTE NORMALE --}}
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            Dashboard
+                        </x-nav-link>
+                        <x-nav-link :href="route('tesseramento.index')" :active="request()->routeIs('tesseramento.*')">
+                            Tesseramento
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

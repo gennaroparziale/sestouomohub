@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory; // <-- Riga fondamentale
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tesseramento extends Model
 {
     use HasFactory;
-
+    protected $table = 'tesseramenti';
     protected $fillable = [
         'user_id',
         'tipo_tessera_id',
