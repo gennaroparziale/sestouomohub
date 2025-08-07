@@ -18,14 +18,18 @@
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ $tessera->descrizione }}</p>
                                 <p class="text-2xl font-semibold mt-2">€ {{ number_format($tessera->prezzo, 2, ',', '.') }}</p>
                             </div>
-                            <div>
-                                <form method="POST" action="{{ route('tesseramento.store') }}">
-                                    @csrf
-                                    <input type="hidden" name="tipo_tessera_id" value="{{ $tessera->id }}">
-                                    <x-primary-button>
-                                        Iscriviti Ora
-                                    </x-primary-button>
-                                </form>
+                            <div class="mt-4">
+                                @if(in_array($tessera->id, $iscrizioniUtenteIds))
+                                    <span class="px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-md">✔ ISCRITTO</span>
+                                @else
+                                    <form method="POST" action="{{ route('tesseramento.store') }}">
+                                        @csrf
+                                        <input type="hidden" name="tipo_tessera_id" value="{{ $tessera->id }}">
+                                        <x-primary-button>
+                                            Iscriviti Ora
+                                        </x-primary-button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     @empty

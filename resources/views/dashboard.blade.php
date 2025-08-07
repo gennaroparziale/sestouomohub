@@ -46,5 +46,30 @@
                 </div>
             </div>
         </div>
+        <div class="mt-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 text-gray-900 dark:text-gray-100">
+                <h3 class="text-xl font-semibold mb-4 border-b pb-2 dark:border-gray-600">Bacheca Annunci</h3>
+                <div class="space-y-6 mt-4">
+                    @forelse ($annunci as $annuncio)
+                        <div class="p-4 border-l-4 @if($annuncio->in_evidenza) border-yellow-400 bg-yellow-50 dark:bg-gray-700/50 @else border-gray-300 dark:border-gray-700 @endif">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-lg font-bold">{{ $annuncio->titolo }}</h4>
+                                @if($annuncio->in_evidenza)
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-200 text-yellow-800">IN EVIDENZA</span>
+                                @endif
+                            </div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                Pubblicato da {{ $annuncio->autore->name ?? 'Admin' }} il {{ $annuncio->created_at->format('d/m/Y') }}
+                            </div>
+                            <div class="prose dark:prose-invert max-w-none text-sm">
+                                {!! nl2br(e($annuncio->contenuto)) !!}
+                            </div>
+                        </div>
+                    @empty
+                        <p>Nessun annuncio recente.</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
     </div>
 </x-app-layout>

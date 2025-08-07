@@ -22,6 +22,10 @@
                                 <x-text-input id="luogo_partita" class="block mt-1 w-full" type="text" name="luogo_partita" :value="old('luogo_partita', $trasferta->luogo_partita)" required />
                             </div>
                             <div>
+                                <x-input-label for="stagione" value="Stagione (es. 2024/2025)" />
+                                <x-text-input id="stagione" class="block mt-1 w-full" type="text" name="stagione" :value="old('stagione', $trasferta->stagione)" required />
+                            </div>
+                            <div>
                                 <x-input-label for="data_ora_partita" value="Data e Ora Partita" />
                                 <x-text-input id="data_ora_partita" class="block mt-1 w-full" type="datetime-local" name="data_ora_partita" :value="old('data_ora_partita', $trasferta->data_ora_partita->format('Y-m-d\TH:i'))" required />
                             </div>
@@ -50,6 +54,16 @@
                             <div>
                                 <x-input-label for="posti_disponibili" value="Posti Disponibili" />
                                 <x-text-input id="posti_disponibili" class="block mt-1 w-full" type="number" step="1" name="posti_disponibili" :value="old('posti_disponibili', $trasferta->posti_disponibili)" required />
+                            </div>
+                            <div>
+                                <x-input-label for="stato" value="Stato" />
+                                <select name="stato" id="stato" class="block mt-1 w-full border-gray-300 ... rounded-md shadow-sm">
+                                    <option value="pianificata" @selected(old('stato', $trasferta->stato) == 'pianificata')>Pianificata</option>
+                                    <option value="iscrizioni_aperte" @selected(old('stato', $trasferta->stato) == 'iscrizioni_aperte')>Iscrizioni Aperte</option>
+                                    <option value="completa" @selected(old('stato', $trasferta->stato) == 'completa')>Completa</option>
+                                    <option value="annullata" @selected(old('stato', $trasferta->stato) == 'annullata')>Annullata</option>
+                                    <option value="conclusa" @selected(old('stato', $trasferta->stato) == 'conclusa')>Conclusa</option>
+                                </select>
                             </div>
                             <div class="md:col-span-2">
                                 <x-input-label for="note_logistiche" value="Note Logistiche (Opzionale)" />

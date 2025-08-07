@@ -1,30 +1,54 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TesseramentoController;
-use App\Http\Controllers\Admin\TrasfertaController;
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\TipoTesseraController; // <-- AGGIUNGI QUESTA RIGA IN CIMA
 use Illuminate\Support\Facades\Auth; // Aggiungi questa riga in cima al file, se non c'è
-use App\Http\Controllers\Admin\TesseramentoController as AdminTesseramentoController; // Rinominiamo per chiarezza
+use App\Http\Controllers\ProfileController;
+
+// Controller Admin
+use App\Http\Controllers\Admin\TipoTesseraController;
+use App\Http\Controllers\Admin\TrasfertaController as AdminTrasfertaController;
+use App\Http\Controllers\Admin\TesseramentoController as AdminTesseramentoController;
+use App\Http\Controllers\Admin\PrenotazioneController;
+use App\Http\Controllers\Admin\MaterialeController as AdminMaterialeController;;
+use App\Http\Controllers\Admin\AnnuncioController;
+use App\Http\Controllers\Admin\SondaggioController as AdminSondaggioController;
+
+
+// Controller Utente
+use App\Http\Controllers\TesseramentoController;
+use App\Http\Controllers\TrasfertaController;
+use App\Http\Controllers\MaterialeController;
+use App\Http\Controllers\SondaggioController;
+
+
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
+// ROTTA PER LA DASHBOARD //////////////
 Route::get('/dashboard', function () {
-    // Carichiamo il tesseramento più recente dell'utente loggato,
-    // includendo anche i dettagli del "tipo di tessera" associato.
-    $tesseramento = Auth::user()
-        ->tesseramenti()
-        ->with('tipoTessera')
-        ->latest()
-        ->first();
+    // Dati tesseramento (già esistente)
+    $tesseramento = Auth::user()->tesseramenti()->with('tipoTessera')->latest()->first();
 
-    return view('dashboard', ['tesseramento' => $tesseramento]);
+    // NUOVA LOGICA: Recuperiamo gli ultimi 5 annunci
+    // Dando priorità a quelli "in evidenza"
+    $annunci = \App\Models\Annuncio::with('autore')
+        ->orderBy('in_evidenza', 'desc')
+        ->latest() // Ordina per data di creazione, i più nuovi prima
+        ->take(5)    // Prendiamo solo gli ultimi 5
+        ->get();
 
+    // Passiamo tutti i dati necessari alla vista
+    return view('dashboard', [
+        'tesseramento' => $tesseramento,
+        'annunci'      => $annunci,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
+// ***************************************************************** //
 
+// ROTTE UTENTE NORMALE
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -32,14 +56,29 @@ Route::middleware('auth')->group(function () {
     // NUOVA ROTTA PER IL TESSERAMENTO
     Route::get('/tesseramento', [TesseramentoController::class, 'index'])->name('tesseramento.index');
     Route::post('/tesseramento', [TesseramentoController::class, 'store'])->name('tesseramento.store'); // <-- NUOVA ROTTA
+    // NUOVA ROTTA PER LE TRASFERTE DEGLI UTENTI
+    // Trasferte Utente
+    Route::get('/trasferte', [TrasfertaController::class, 'index'])->name('trasferte.index');
+    Route::post('/trasferte/{trasferta}', [TrasfertaController::class, 'prenota'])->name('trasferte.prenota'); // <-- NUOVA ROTTA
+    Route::get('/i-miei-materiali', [MaterialeController::class, 'index'])->name('materiali.index');
+    Route::get('/sondaggi', [SondaggioController::class, 'index'])->name('sondaggi.index');
+    Route::get('/sondaggi/{sondaggio}', [SondaggioController::class, 'show'])->name('sondaggi.show');
+    Route::post('/sondaggi/{sondaggio}/vota', [SondaggioController::class, 'vota'])->name('sondaggi.vota'); // <-- NUOVA ROTTA
 
 });
 
+// ROTTE ADMIN
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // QUESTA RIGA CREA LE ROTTE PER IL CRUD (index, create, store, edit, etc.)
     Route::resource('tipi-tessera', TipoTesseraController::class);
     Route::resource('tesseramenti', AdminTesseramentoController::class); // <-- NUOVA RIGA
-    Route::resource('trasferte', TrasfertaController::class); // <-- NUOVA RIGA
+    Route::resource('trasferte', AdminTrasfertaController::class);
+    // NUOVA ROTTA PER LA LISTA PRENOTAZIONI DI UNA SINGOLA TRASFERTA
+    Route::get('/trasferte/{trasferta}/prenotazioni', [AdminTrasfertaController::class, 'showPrenotazioni'])->name('trasferte.prenotazioni');
+    Route::patch('/prenotazioni/{prenotazione}/update-status', [PrenotazioneController::class, 'updateStatus'])->name('prenotazioni.updateStatus');
+    Route::resource('materiali', AdminMaterialeController::class); // <-- Assicurati che qui ci sia il controller con l'alias
+    Route::resource('annunci', AnnuncioController::class); // <-- NUOVA RIGA
+    Route::resource('sondaggi', AdminSondaggioController::class);
 });
 
 require __DIR__.'/auth.php';

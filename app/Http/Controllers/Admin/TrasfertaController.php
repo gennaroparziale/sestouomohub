@@ -12,10 +12,8 @@ class TrasfertaController extends Controller
      */
     public function index()
     {
-        // Recuperiamo tutte le trasferte, ordinate dalla più recente alla più vecchia
-        $trasferte = \App\Models\Trasferta::latest()->get();
-
-        // Passiamo i dati alla vista che creeremo tra poco
+        // Ordiniamo per la data della partita, in modo ascendente (dalla più vicina alla più lontana)
+        $trasferte = \App\Models\Trasferta::withCount('prenotazioni')->orderBy('data_ora_partita', 'asc')->get();
         return view('admin.trasferte.index', ['trasferte' => $trasferte]);
     }
 
@@ -36,6 +34,7 @@ class TrasfertaController extends Controller
         $validated = $request->validate([
             'avversario' => 'required|string|max:255',
             'luogo_partita' => 'required|string|max:255',
+            'stagione' => 'required|string|max:255', // <-- AGGIUNGI QUESTA REGOLA
             'data_ora_partita' => 'required|date',
             'data_ora_ritrovo' => 'required|date',
             'luogo_ritrovo' => 'required|string|max:255',
@@ -43,6 +42,7 @@ class TrasfertaController extends Controller
             'costo' => 'required|numeric|min:0',
             'posti_disponibili' => 'required|integer|min:1',
             'note_logistiche' => 'nullable|string',
+            'stato' => 'required|in:pianificata,iscrizioni_aperte,completa,annullata,conclusa', // <-- AGGIUNGI QUESTA
         ]);
 
         // 2. Creazione della trasferta nel database
@@ -81,6 +81,7 @@ class TrasfertaController extends Controller
         $validated = $request->validate([
             'avversario' => 'required|string|max:255',
             'luogo_partita' => 'required|string|max:255',
+            'stagione' => 'required|string|max:255',
             'data_ora_partita' => 'required|date',
             'data_ora_ritrovo' => 'required|date',
             'luogo_ritrovo' => 'required|string|max:255',
@@ -88,6 +89,7 @@ class TrasfertaController extends Controller
             'costo' => 'required|numeric|min:0',
             'posti_disponibili' => 'required|integer|min:1',
             'note_logistiche' => 'nullable|string',
+            'stato' => 'required|in:pianificata,iscrizioni_aperte,completa,annullata,conclusa', // <-- AGGIUNGI QUESTA
         ]);
 
         // Aggiorniamo il record con i dati validati
@@ -110,5 +112,20 @@ class TrasfertaController extends Controller
 
         // Reindirizziamo con un messaggio di successo
         return redirect()->route('admin.trasferte.index')->with('success', 'Trasferta eliminata con successo!');
+    }
+    public function showPrenotazioni(string $id)
+    {
+        // 1. Troviamo la trasferta specifica usando l'ID che arriva dall'URL.
+        $trasferta = \App\Models\Trasferta::findOrFail($id);
+
+        // 2. Carichiamo tutte le sue prenotazioni. Per ogni prenotazione,
+        // carichiamo in anticipo anche i dati dell'utente associato per essere più efficienti.
+        $prenotazioni = $trasferta->prenotazioni()->with('user')->get();
+
+        // 3. Passiamo la trasferta e la lista delle prenotazioni alla nuova vista.
+        return view('admin.trasferte.prenotazioni', [
+            'trasferta' => $trasferta,
+            'prenotazioni' => $prenotazioni,
+        ]);
     }
 }

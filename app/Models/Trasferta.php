@@ -24,6 +24,7 @@ class Trasferta extends Model
         'avversario',
         'data_ora_partita',
         'luogo_partita',
+        'stagione', // <-- AGGIUNGI QUI
         'data_ora_ritrovo',
         'luogo_ritrovo',
         'mezzo_trasporto',
@@ -44,4 +45,9 @@ class Trasferta extends Model
         'iscrizioni_chiuse_il' => 'datetime',
         'costo' => 'decimal:2',
     ];
+
+    public function prenotazioni(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\PrenotazioneTrasferta::class);
+    }
 }

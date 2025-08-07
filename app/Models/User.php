@@ -64,4 +64,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Tesseramento::class);
     }
+    // Metodo per la prenotazione delle trasferte
+    public function prenotazioniTrasferte(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\PrenotazioneTrasferta::class);
+    }
+
+    public function materiali(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\Materiale::class, 'responsabile_id');
+    }
+    public function annunci(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\Annuncio::class, 'user_id');
+    }
+    public function votiSondaggi(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\VotoUtente::class);
+    }
 }

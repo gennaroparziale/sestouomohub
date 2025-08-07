@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Gestione Trasferte
+            Gestione Annunci
         </h2>
     </x-slot>
 
@@ -9,48 +9,39 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if (session('success'))
-                        <div class="mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+
                     <div class="flex justify-end mb-4">
-                        <a href="{{ route('admin.trasferte.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 ... text-white ... rounded-md ...">
-                            Crea Nuova Trasferta
+                        <a href="{{ route('admin.annunci.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 ... text-white ... rounded-md ...">
+                            Scrivi Annuncio
                         </a>
                     </div>
+
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Avversario</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data Partita</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stato</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Posti</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Titolo</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Autore</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">In Evidenza</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Azioni</th>
                         </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
-                        @forelse ($trasferte as $trasferta)
+                        @forelse ($annunci as $annuncio)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $trasferta->avversario }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $trasferta->data_ora_partita->format('d/m/Y H:i') }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $trasferta->stato }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap font-bold">{{ $annuncio->titolo }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $annuncio->autore->name ?? 'N/A' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ $trasferta->prenotazioni_count }} / {{ $trasferta->posti_disponibili }}
-                                    @if($trasferta->prenotazioni_count >= $trasferta->posti_disponibili)
-                                        <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">SOLD OUT</span>
+                                    @if($annuncio->in_evidenza)
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Sì</span>
+                                    @else
+                                        <span class="text-gray-500">No</span>
                                     @endif
                                 </td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $annuncio->created_at->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex items-center space-x-4">
-
-                                        <a href="{{ route('admin.trasferte.prenotazioni', $trasferta) }}" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400" title="Visualizza Prenotazioni">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m-7.5-2.962a3.75 3.75 0 1 0-7.5 0 3.75 3.75 0 0 0 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                            </svg>
-                                        </a>
-
-                                        <form method="GET" action="{{ route('admin.trasferte.edit', $trasferta) }}">
+                                        <form method="GET" action="{{ route('admin.annunci.edit', $annuncio) }}">
                                             <button type="submit" class="text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400" title="Modifica">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
@@ -66,11 +57,11 @@
                                                     </svg>
                                                 </button>
                                             </x-slot>
-                                            <x-slot name="title">Conferma Eliminazione Trasferta</x-slot>
+                                            <x-slot name="title">Conferma Eliminazione Annuncio</x-slot>
                                             <x-slot name="content">
-                                                Sei assolutamente sicuro di voler eliminare la trasferta contro <strong>{{ $trasferta->avversario }}</strong>?
+                                                Sei sicuro di voler eliminare l'annuncio "<strong>{{ $annuncio->titolo }}</strong>"?
                                             </x-slot>
-                                            <form method="POST" action="{{ route('admin.trasferte.destroy', $trasferta) }}">
+                                            <form method="POST" action="{{ route('admin.annunci.destroy', $annuncio) }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <x-danger-button type="submit">
@@ -78,13 +69,12 @@
                                                 </x-danger-button>
                                             </form>
                                         </x-confirm-modal>
-
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-4 text-center">Nessuna trasferta trovata.</td>
+                                <td colspan="5" class="px-6 py-4 text-center">Nessun annuncio presente.</td>
                             </tr>
                         @endforelse
                         </tbody>
