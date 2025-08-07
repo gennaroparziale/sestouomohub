@@ -16,22 +16,28 @@
                     @if (Auth::user() && Auth::user()->is_admin)
                         {{-- MENU PER L'ADMIN --}}
                         <x-nav-link :href="route('admin.tesseramenti.index')" :active="request()->routeIs('admin.tesseramenti.*')">
-                            Gestione Tesseramenti
+                            Tesseramenti
                         </x-nav-link>
                         <x-nav-link :href="route('admin.tipi-tessera.index')" :active="request()->routeIs('admin.tipi-tessera.*')">
-                            Gestione Tipi Tessera
+                            Tipi Tessera
                         </x-nav-link>
                         <x-nav-link :href="route('admin.trasferte.index')" :active="request()->routeIs('admin.trasferte.*')">
-                            Gestione Trasferte
+                            Trasferte
                         </x-nav-link>
                         <x-nav-link :href="route('admin.materiali.index')" :active="request()->routeIs('admin.materiali.*')">
-                            Gestione Materiale
+                            Materiale
                         </x-nav-link>
                         <x-nav-link :href="route('admin.annunci.index')" :active="request()->routeIs('admin.annunci.*')">
-                            Gestione Annunci
+                            Annunci
                         </x-nav-link>
                         <x-nav-link :href="route('admin.sondaggi.index')" :active="request()->routeIs('admin.sondaggi.*')">
-                            Gestione Sondaggi
+                            Sondaggi
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.prodotti.index')" :active="request()->routeIs('admin.prodotti.*')">
+                            Merchandising
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.cori.index')" :active="request()->routeIs('admin.cori.*')">
+                            Libretto Cori
                         </x-nav-link>
                     @else
                         {{-- MENU PER L'UTENTE NORMALE --}}
@@ -49,6 +55,9 @@
                         </x-nav-link>
                         <x-nav-link :href="route('sondaggi.index')" :active="request()->routeIs('sondaggi.*')">
                             Sondaggi
+                        </x-nav-link>
+                        <x-nav-link :href="route('cori.index')" :active="request()->routeIs('cori.index')">
+                            Libretto Cori
                         </x-nav-link>
                     @endif
                 </div>
@@ -71,7 +80,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Profilo') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->

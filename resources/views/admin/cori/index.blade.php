@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Gestione Tipi Tessera
+            Gestione Libretto dei Cori
         </h2>
     </x-slot>
 
@@ -10,39 +10,37 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if (session('success'))
-                        <div class="mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                        <div class="mb-4 p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">
                             {{ session('success') }}
                         </div>
                     @endif
                     <div class="flex justify-end mb-4">
-                        <a href="{{ route('admin.tipi-tessera.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                            Aggiungi Nuovo Tipo Tessera
+                        <a href="{{ route('admin.cori.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 ... text-white ... rounded-md ...">
+                            Aggiungi Nuovo Coro
                         </a>
                     </div>
+
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nome</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stagione</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Prezzo</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Azioni</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Titolo</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Azioni</th>
                         </tr>
                         </thead>
-                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        @forelse ($tipiTessera as $tessera)
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
+                        @forelse ($cori as $coro)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $tessera->nome }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $tessera->stagione }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">€ {{ number_format($tessera->prezzo, 2, ',', '.') }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <td class="px-6 py-4 whitespace-nowrap font-bold">{{ $coro->titolo }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex items-center space-x-4">
-                                        <form method="GET" action="{{ route('admin.tipi-tessera.edit', $tessera) }}">
+                                        <form method="GET" action="{{ route('admin.cori.edit', $coro) }}">
                                             <button type="submit" class="text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400" title="Modifica">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                 </svg>
                                             </button>
                                         </form>
+
                                         <x-confirm-modal>
                                             <x-slot name="trigger">
                                                 <button type="button" class="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400" title="Elimina">
@@ -51,11 +49,11 @@
                                                     </svg>
                                                 </button>
                                             </x-slot>
-                                            <x-slot name="title">Conferma Eliminazione</x-slot>
+                                            <x-slot name="title">Conferma Eliminazione Coro</x-slot>
                                             <x-slot name="content">
-                                                Sei sicuro di voler eliminare la tessera "<strong>{{ $tessera->nome }}</strong>"?
+                                                Sei sicuro di voler eliminare il coro "<strong>{{ $coro->titolo }}</strong>"?
                                             </x-slot>
-                                            <form method="POST" action="{{ route('admin.tipi-tessera.destroy', $tessera) }}">
+                                            <form method="POST" action="{{ route('admin.cori.destroy', $coro) }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <x-danger-button type="submit">
@@ -64,27 +62,15 @@
                                             </form>
                                         </x-confirm-modal>
                                     </div>
-
-                                    <?php /*
-                                    <a href="{{ route('admin.tipi-tessera.edit', $tessera) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-200">Modifica</a>
-                                <form class="inline-block ml-4" method="POST" action="{{ route('admin.tipi-tessera.destroy', $tessera) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-200" onclick="return confirm('Sei sicuro di voler eliminare questa tessera? L\'azione è irreversibile!')">
-                                        Elimina
-                                    </button>
-                                </form>
-                                */?>
-
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-center">Nessun tipo di tessera trovato.</td>
+                                <td colspan="2" class="px-6 py-4 text-center">Nessun coro inserito.</td>
                             </tr>
                         @endforelse
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>

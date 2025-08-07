@@ -13,13 +13,15 @@ use App\Http\Controllers\Admin\PrenotazioneController;
 use App\Http\Controllers\Admin\MaterialeController as AdminMaterialeController;;
 use App\Http\Controllers\Admin\AnnuncioController;
 use App\Http\Controllers\Admin\SondaggioController as AdminSondaggioController;
-
+use App\Http\Controllers\Admin\CoroController as AdminCoroController;
+use App\Http\Controllers\Admin\ProdottoController;
 
 // Controller Utente
 use App\Http\Controllers\TesseramentoController;
 use App\Http\Controllers\TrasfertaController;
 use App\Http\Controllers\MaterialeController;
 use App\Http\Controllers\SondaggioController;
+use App\Http\Controllers\CoroController;
 
 
 
@@ -64,7 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sondaggi', [SondaggioController::class, 'index'])->name('sondaggi.index');
     Route::get('/sondaggi/{sondaggio}', [SondaggioController::class, 'show'])->name('sondaggi.show');
     Route::post('/sondaggi/{sondaggio}/vota', [SondaggioController::class, 'vota'])->name('sondaggi.vota'); // <-- NUOVA ROTTA
-
+    Route::get('/cori', [CoroController::class, 'index'])->name('cori.index');
 });
 
 // ROTTE ADMIN
@@ -79,6 +81,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('materiali', AdminMaterialeController::class); // <-- Assicurati che qui ci sia il controller con l'alias
     Route::resource('annunci', AnnuncioController::class); // <-- NUOVA RIGA
     Route::resource('sondaggi', AdminSondaggioController::class);
+    Route::resource('cori', AdminCoroController::class);
+    Route::resource('prodotti', ProdottoController::class);
 });
 
 require __DIR__.'/auth.php';
