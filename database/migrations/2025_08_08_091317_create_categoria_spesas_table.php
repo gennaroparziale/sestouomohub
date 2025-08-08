@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transazioni', function (Blueprint $table) {
+        Schema::create('categoria_spesas', function (Blueprint $table) {
             $table->id();
-            $table->date('data_transazione');
-            $table->string('descrizione');
-            $table->decimal('importo', 8, 2);
-            $table->enum('tipo', ['entrata', 'uscita']);
-            $table->string('categoria')->nullable();
-            $table->text('note')->nullable();
+            $table->string('nome')->unique();
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaziones');
+        Schema::dropIfExists('categoria_spesas');
     }
 };

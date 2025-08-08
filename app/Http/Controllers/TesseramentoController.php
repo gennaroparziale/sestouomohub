@@ -7,6 +7,7 @@ use App\Models\Tesseramento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\GestisceStagione;
+use App\Events\NuovaSottoscrizioneTessera;
 
 class TesseramentoController extends Controller
 {
@@ -59,13 +60,15 @@ class TesseramentoController extends Controller
         }
 
         // 3. Creiamo il nuovo tesseramento
-        Tesseramento::create([
+        $tesseramento=Tesseramento::create([
             'user_id' => $utente->id,
             'tipo_tessera_id' => $tipoTesseraId,
             'data_inizio' => now(),
             'data_fine' => now()->addYear(),
             'stato' => 'non pagato',
         ]);
+        // LANCIA L'EVENTO!
+        NuovaSottoscrizioneTessera::dispatch($tesseramento);
 
         // 4. Reindirizziamo
         return redirect()->route('dashboard')->with('success', 'Iscrizione avvenuta con successo!');

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\NuovaPrenotazioneTrasfertaNotification;
 use Illuminate\Http\Request;
 use App\Models\Trasferta;
 use App\Models\PrenotazioneTrasferta;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\GestisceStagione;
+use App\Events\TrasfertaPrenotata;
 
 class TrasfertaController extends Controller
 {
@@ -33,6 +35,7 @@ class TrasfertaController extends Controller
 
     public function prenota(Request $request, Trasferta $trasferta)
     {
+
         $utente = Auth::user();
 
         // --- Iniziano i controlli di sicurezza ---
@@ -58,15 +61,17 @@ class TrasfertaController extends Controller
         // --- Se tutti i controlli passano, procediamo ---
 
         // Creiamo la prenotazione
-        PrenotazioneTrasferta::create([
+        $prenotazione=PrenotazioneTrasferta::create([
             'user_id' => $utente->id,
             'trasferta_id' => $trasferta->id,
         ]);
+        \App\Events\TrasfertaPrenotata::dispatch($prenotazione);
 
         // Se abbiamo occupato l'ultimo posto, cambiamo lo stato della trasferta in "completa"
         if (($postiOccupati + 1) == $trasferta->posti_disponibili) {
             $trasferta->update(['stato' => 'completa']);
         }
+
 
         // Reindirizziamo alla dashboard con un messaggio di successo
         return redirect()->route('dashboard')->with('success', 'Prenotazione effettuata con successo per la trasferta contro ' . $trasferta->avversario . '!');

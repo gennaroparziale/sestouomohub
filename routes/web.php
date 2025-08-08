@@ -15,6 +15,9 @@ use App\Http\Controllers\Admin\AnnuncioController;
 use App\Http\Controllers\Admin\SondaggioController as AdminSondaggioController;
 use App\Http\Controllers\Admin\CoroController as AdminCoroController;
 use App\Http\Controllers\Admin\ProdottoController;
+use App\Http\Controllers\Admin\TransazioneController;
+use App\Http\Controllers\Admin\CategoriaSpesaController;
+use App\Http\Controllers\Admin\NotificationController;
 
 // Controller Utente
 use App\Http\Controllers\TesseramentoController;
@@ -83,6 +86,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('sondaggi', AdminSondaggioController::class);
     Route::resource('cori', AdminCoroController::class);
     Route::resource('prodotti', ProdottoController::class);
+    Route::resource('transazioni', TransazioneController::class);
+    Route::resource('categorie-spesa', CategoriaSpesaController::class);
+    Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+
+
 });
 
 require __DIR__.'/auth.php';

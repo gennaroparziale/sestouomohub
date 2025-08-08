@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule; // Aggiungi in cima
+use App\Events\TesseramentoPagato;
 
 class TesseramentoController extends Controller
 {
@@ -61,15 +62,18 @@ class TesseramentoController extends Controller
     {
         $tesseramento = \App\Models\Tesseramento::findOrFail($id);
 
-        // Validiamo che lo stato inviato sia uno dei valori permessi
         $validated = $request->validate([
-            'stato' => ['required', Rule::in(['pagato', 'non pagato', 'in attesa'])],
+            'stato' => ['required', \Illuminate\Validation\Rule::in(['pagato', 'non pagato', 'in attesa'])],
         ]);
 
-        // Aggiorniamo il record nel database
         $tesseramento->update($validated);
 
-        return redirect()->route('admin.tesseramenti.index')->with('success', 'Stato del tesseramento aggiornato con successo!');
+        // Se lo stato aggiornato è "pagato", lancia l'evento!
+        if ($tesseramento->stato == 'pagato') {
+            TesseramentoPagato::dispatch($tesseramento);
+        }
+
+        return redirect()->route('admin.tesseramenti.index')->with('success', 'Stato tesseramento aggiornato!');
     }
 
     /**
