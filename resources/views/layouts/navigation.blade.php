@@ -96,7 +96,7 @@
                         >
                             <x-dropdown align="right" width="64">
                                 <x-slot name="trigger">
-                                    <button @click="open = !open; markAsRead()" class="relative inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 rounded-lg focus:outline-none">
+                                    <button @click="markAsRead()" class="relative inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 rounded-lg focus:outline-none">
                                         <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20"><path d="M12.133 10.632v-1.8a5.406 5.406 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V1.4a1.4 1.4 0 0 0-2.8 0v2.064a.955.955 0 0 0 .021.106A5.406 5.406 0 0 0 1.867 8.832v1.8a2.121 2.121 0 0 0 1.519 2.073c.2.064.41.124.625.183v2.364a2.333 2.333 0 1 0 4.667 0v-2.364a6.248 6.248 0 0 0 .625-.183A2.121 2.121 0 0 0 12.133 10.632ZM9.333 16.4a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></svg>
 
                                         <div x-show="notificationsCount > 0" class="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-1 dark:border-gray-900">
