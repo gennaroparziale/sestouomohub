@@ -15,6 +15,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tifoso</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tessera</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stato</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Metodo pagamento</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Azioni</th>
                         </tr>
                         </thead>
@@ -28,6 +29,7 @@
                                             {{ $tesseramento->stato }}
                                         </span>
                                 </td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $tesseramento->metodo_pagamento ?? 'N/A' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     @if ($tesseramento->stato != 'pagato')
                                         <form method="POST" action="{{ route('admin.tesseramenti.update', $tesseramento) }}" class="inline-block">

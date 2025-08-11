@@ -31,16 +31,22 @@
                                 <p><strong>Tipo Tessera:</strong> {{ $tesseramento->tipoTessera->nome }}</p>
                                 <p><strong>Prezzo:</strong> € {{ number_format($tesseramento->tipoTessera->prezzo, 2, ',', '.') }}</p>
                                 <p><strong>Stato Pagamento:</strong>
-                                    <span class="font-bold uppercase px-2 py-1 text-xs rounded-full {{ $tesseramento->stato == 'pagato' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                    {{ $tesseramento->stato }}
-                </span>
+                                    <span class="font-bold uppercase ... {{ $tesseramento->stato == 'pagato' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                {{ $tesseramento->stato }}
+            </span>
                                 </p>
+
+                                @if ($tesseramento->stato == 'non pagato')
+                                    <div class="mt-4 border-t pt-4 dark:border-gray-700">
+                                        <form action="{{ route('checkout.tesseramento', $tesseramento) }}" method="POST">
+                                            @csrf
+                                            <x-primary-button>Paga con Carta</x-primary-button>
+                                        </form>
+                                    </div>
+                                @endif
+
                             </div>
                         @else
-                            <p>Non risulti ancora tesserato per la stagione corrente.</p>
-                            <a href="{{ route('tesseramento.index') }}" class="inline-block mt-2 text-indigo-600 dark:text-indigo-400 hover:underline">
-                                Vai alla pagina di tesseramento per iscriverti!
-                            </a>
                         @endif
                     </div>
                 </div>

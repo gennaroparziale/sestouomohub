@@ -27,22 +27,24 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th class="px-6 py-3 ...">Data</th>
+                            <th class="px-3 py-3 ...">Data</th>
                             <th class="px-6 py-3 ...">Descrizione</th>
                             <th class="px-6 py-3 ...">Categoria</th>
                             <th class="px-6 py-3 ...">Importo</th>
+                            <th class="px-3 py-2 ...">Metodo pagamento</th>
                             <th class="px-6 py-3 ... text-right">Azioni</th>
                         </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
                         @forelse ($transazioni as $transazione)
                             <tr>
-                                <td class="px-6 py-4 ...">{{ $transazione->data_transazione->format('d/m/Y') }}</td>
+                                <td class="px-3 py-4 ...">{{ $transazione->data_transazione->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4 ...">{{ $transazione->descrizione }}</td>
                                 <td class="px-6 py-4 ...">{{ $transazione->categoriaSpesa->nome ?? 'N/A' }}</td>
                                 <td class="px-6 py-4 font-bold {{ $transazione->tipo == 'entrata' ? 'text-green-500' : 'text-red-500' }}">
                                     {{ $transazione->tipo == 'entrata' ? '+' : '-' }} € {{ number_format($transazione->importo, 2, ',', '.') }}
                                 </td>
+                                <td class="px-3 py-2 ...">{{ $transazione->metodo_pagamento ?? 'N/A' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end space-x-4">
                                         <form method="GET" action="{{ route('admin.transazioni.edit', $transazione) }}">

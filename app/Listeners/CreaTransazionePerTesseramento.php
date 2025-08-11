@@ -36,6 +36,7 @@ class CreaTransazionePerTesseramento
             'importo' => $tesseramento->tipoTessera->prezzo,
             'tipo' => 'entrata',
             'categoria_spesa_id' => $categoria->id,
+            'metodo_pagamento' => $tesseramento->metodo_pagamento, // <-- NUOVA RIGA
         ]);
 
         // --- AZIONE 2: Inviare la notifica (la nostra novità!) ---

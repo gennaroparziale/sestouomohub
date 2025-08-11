@@ -26,6 +26,10 @@
                             <x-input-label for="prezzo" value="Prezzo" />
                             <x-text-input id="prezzo" class="block mt-1 w-full" type="number" step="0.01" name="prezzo" :value="old('prezzo', $tessera->prezzo)" required />
                         </div>
+                        <div class="mt-4">
+                            <x-input-label for="stripe_price_id" value="stripe_price_id_label" />
+                            <x-text-input id="stripe_price_id" class="block mt-1 w-full" type="text" name="stripe_price_id" :value="old('stripe_price_id', $tessera->stripe_price_id)" />
+                        </div>
 
                         <div class="mt-4">
                             <x-input-label for="stagione" value="Stagione" />

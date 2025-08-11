@@ -66,10 +66,24 @@ class TesseramentoController extends Controller
             'stato' => ['required', \Illuminate\Validation\Rule::in(['pagato', 'non pagato', 'in attesa'])],
         ]);
 
-        $tesseramento->update($validated);
+        // Prepariamo i dati da aggiornare
+        $dataToUpdate = $validated;
 
-        // Se lo stato aggiornato è "pagato", lancia l'evento!
+        // Se lo stato che stiamo impostando è 'pagato' (dal nostro pulsante),
+        // aggiungiamo il metodo di pagamento manuale.
+        if ($validated['stato'] === 'pagato') {
+            $dataToUpdate['metodo_pagamento'] = 'Contanti';
+        }
+
+        // Aggiorniamo il tesseramento con tutti i dati
+        $tesseramento->update($dataToUpdate);
+
+        // Ricarichiamo il modello per essere sicuri di avere i dati aggiornati
+        $tesseramento->refresh();
+
+        // Se lo stato del tesseramento ORA è "pagato", lancia l'evento!
         if ($tesseramento->stato == 'pagato') {
+            // Assicurati di avere in cima al file: use App\Events\TesseramentoPagato;
             TesseramentoPagato::dispatch($tesseramento);
         }
 

@@ -19,6 +19,7 @@ class Transazione extends Model
         'categoria_spesa_id',
         'categoria',
         'note',
+        'metodo_pagamento',
     ];
 
     protected $casts = [

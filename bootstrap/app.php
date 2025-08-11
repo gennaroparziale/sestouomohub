@@ -15,6 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+        // NUOVA RIGA: Aggiungiamo l'eccezione per il webhook di Stripe
+        // --- QUESTA È LA SINTASSI CORRETTA ---
+        // Metodo corretto per l'eccezione CSRF
+        $middleware->validateCsrfTokens(except: [
+            'stripe/webhook'
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

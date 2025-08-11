@@ -25,12 +25,16 @@ use App\Http\Controllers\TrasfertaController;
 use App\Http\Controllers\MaterialeController;
 use App\Http\Controllers\SondaggioController;
 use App\Http\Controllers\CoroController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\StripeWebhookController;
 
 
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
+// ROTTA PER IL WEBHOOK DI STRIPE, PER TRACCIARE LA RISPOSTA DEL PAGAMENTO
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])->name('stripe.webhook');
 
 // ROTTA PER LA DASHBOARD //////////////
 Route::get('/dashboard', function () {
@@ -70,6 +74,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/sondaggi/{sondaggio}', [SondaggioController::class, 'show'])->name('sondaggi.show');
     Route::post('/sondaggi/{sondaggio}/vota', [SondaggioController::class, 'vota'])->name('sondaggi.vota'); // <-- NUOVA ROTTA
     Route::get('/cori', [CoroController::class, 'index'])->name('cori.index');
+    Route::post('/checkout/tesseramento/{tesseramento}', [CheckoutController::class, 'checkoutTesseramento'])->name('checkout.tesseramento');
+    Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
+
 });
 
 // ROTTE ADMIN

@@ -25,7 +25,10 @@
                             <x-input-label for="prezzo" value="Prezzo (es. 20.00)" />
                             <x-text-input id="prezzo" class="block mt-1 w-full" type="number" step="0.01" name="prezzo" :value="old('prezzo')" required />
                         </div>
-
+                        <div class="mt-4">
+                            <x-input-label for="stripe_price_id" value="stripe_price_id_label" />
+                            <x-text-input id="stripe_price_id" class="block mt-1 w-full" type="text" name="stripe_price_id" :value="old('stripe_price_id')" />
+                        </div>
                         <div class="mt-4">
                             <x-input-label for="stagione" value="Stagione (es. 2025/2026)" />
                             <x-text-input id="stagione" class="block mt-1 w-full" type="text" name="stagione" :value="old('stagione')" required />

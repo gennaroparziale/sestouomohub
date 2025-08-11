@@ -33,6 +33,9 @@
                         <x-nav-link :href="route('admin.sondaggi.index')" :active="request()->routeIs('admin.sondaggi.*')">
                             Sondaggi
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.cori.index')" :active="request()->routeIs('admin.cori.index')">
+                            Libretto Cori
+                        </x-nav-link>
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">

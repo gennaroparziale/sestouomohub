@@ -1,0 +1,1 @@
+stripe listen --forward-to https://gestionale-tifoseria.test/stripe/webhook

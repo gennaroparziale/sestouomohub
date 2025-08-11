@@ -47,6 +47,7 @@ class TransazioneController extends Controller
             'importo' => 'required|numeric|min:0',
             'tipo' => 'required|in:entrata,uscita',
             'categoria_spesa_id' => 'nullable|exists:categoria_spesas,id',
+            'metodo_pagamento' => 'nullable|string|max:255',
             'note' => 'nullable|string',
         ]);
 
@@ -88,6 +89,7 @@ class TransazioneController extends Controller
             'importo' => 'required|numeric|min:0',
             'tipo' => 'required|in:entrata,uscita',
             'categoria_spesa_id' => 'nullable|exists:categoria_spesas,id',
+            'metodo_pagamento' => 'nullable|string|max:255',
             'note' => 'nullable|string',
         ]);
         $transazione->update($validated);

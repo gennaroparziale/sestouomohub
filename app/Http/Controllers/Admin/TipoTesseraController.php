@@ -26,6 +26,7 @@ class TipoTesseraController extends Controller
             'descrizione' => 'nullable|string',
             'prezzo' => 'required|numeric|min:0',
             'stagione' => 'required|string|max:255',
+            'stripe_price_id' =>'nullable|string|max:255',
         ]);
         TipoTessera::create($validated);
         return redirect()->route('admin.tipi-tessera.index')->with('success', 'Tipo tessera creato con successo!');
@@ -53,6 +54,7 @@ class TipoTesseraController extends Controller
             'descrizione' => 'nullable|string',
             'prezzo' => 'required|numeric|min:0',
             'stagione' => 'required|string|max:255',
+            'stripe_price_id' =>'nullable|string|max:255',
         ]);
 
         $tessera->update($validated);

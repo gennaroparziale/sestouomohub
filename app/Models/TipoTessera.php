@@ -16,6 +16,7 @@ class TipoTessera extends Model
         'prezzo',
         'stagione',
         'attivo',
+        'stripe_price_id',
     ];
 
     public function tesseramenti(): HasMany

@@ -34,6 +34,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div>
+                                <x-input-label for="metodo_pagamento" value="Metodo di Pagamento (Opzionale)" />
+                                <select name="metodo_pagamento" id="metodo_pagamento" class="block mt-1 w-full border-gray-300 ... rounded-md shadow-sm">
+                                    <option value="">N/A</option>
+                                    <option value="Contanti" @selected(old('metodo_pagamento', $transazione->metodo_pagamento) == 'Contanti')>Contanti</option>
+                                    <option value="Carta di Credito" @selected(old('metodo_pagamento', $transazione->metodo_pagamento) == 'Carta di Credito')>Carta di Credito</option>
+                                    <option value="Bonifico Bancario" @selected(old('metodo_pagamento', $transazione->metodo_pagamento) == 'Bonifico Bancario')>Bonifico Bancario</option>
+                                </select>
+                            </div>
                             <div class="md:col-span-2">
                                 <x-input-label for="descrizione" value="Descrizione" />
                                 <x-text-input id="descrizione" class="block mt-1 w-full" type="text" name="descrizione" :value="old('descrizione', $transazione->descrizione)" required />

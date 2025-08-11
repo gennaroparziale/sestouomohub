@@ -16,6 +16,7 @@ class Tesseramento extends Model
         'data_inizio',
         'data_fine',
         'stato',
+        'metodo_pagamento',
     ];
 
     public function user(): BelongsTo
