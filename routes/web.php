@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\SettoreController;
 use App\Http\Controllers\Admin\CoreografiaController as AdminCoreografiaController;
 use App\Http\Controllers\Admin\ScannerController;
+use App\Http\Controllers\Admin\PartitaCasaController;
 
 
 
@@ -110,6 +111,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('coreografie', AdminCoreografiaController::class); // <-- NUOVA RIGA
     Route::post('/coreografie/{coreografia}/salva-piano', [AdminCoreografiaController::class, 'salvaPiano'])->name('coreografie.salvaPiano');
     Route::get('/scanner', [ScannerController::class, 'index'])->name('scanner.index');
+    Route::resource('partite-in-casa', PartitaCasaController::class);
+    Route::post('/scanner/check-in', [ScannerController::class, 'checkIn'])->name('scanner.checkin');
 
 
 
