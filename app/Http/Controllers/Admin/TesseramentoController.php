@@ -18,7 +18,7 @@ class TesseramentoController extends Controller
         // e del tipo di tessera per ottimizzare le query al database.
         $tesseramenti = \App\Models\Tesseramento::with(['user', 'tipoTessera'])
             ->latest()
-            ->get();
+            ->paginate(15);
 
         return view('admin.tesseramenti.index', ['tesseramenti' => $tesseramenti]);
     }

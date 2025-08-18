@@ -83,4 +83,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\VotoUtente::class);
     }
+    public function presenze()
+    {
+        return $this->hasMany(Presenza::class);
+    }
 }

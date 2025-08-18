@@ -50,4 +50,10 @@ class Trasferta extends Model
     {
         return $this->hasMany(\App\Models\PrenotazioneTrasferta::class);
     }
+
+    public function presenze()
+    {
+        // Una trasferta può avere molte presenze attraverso la relazione polimorfica
+        return $this->morphMany(Presenza::class, 'presenziabile');
+    }
 }

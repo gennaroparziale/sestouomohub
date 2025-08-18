@@ -33,8 +33,14 @@
                         <x-nav-link :href="route('admin.sondaggi.index')" :active="request()->routeIs('admin.sondaggi.*')">
                             Sondaggi
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.coreografie.index')" :active="request()->routeIs('admin.coreografie.*')">
+                            Coreografie
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.scanner.index')" :active="request()->routeIs('admin.scanner.index')">
+                            Scanner
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.cori.index')" :active="request()->routeIs('admin.cori.index')">
-                            Libretto Cori
+                            Cori
                         </x-nav-link>
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <x-dropdown align="right" width="48">
@@ -51,6 +57,9 @@
                                     </x-dropdown-link>
                                     <x-dropdown-link :href="route('admin.categorie-spesa.index')">
                                         Categorie Spesa
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('admin.settori.index')">
+                                        Gestione Settori
                                     </x-dropdown-link>
                                 </x-slot>
                             </x-dropdown>
@@ -149,8 +158,11 @@
                         <x-nav-link :href="route('sondaggi.index')" :active="request()->routeIs('sondaggi.*')">
                             Sondaggi
                         </x-nav-link>
+                        <x-nav-link :href="route('coreografie.index')" :active="request()->routeIs('coreografie.*')">
+                            Coreografie
+                        </x-nav-link>
                         <x-nav-link :href="route('cori.index')" :active="request()->routeIs('cori.index')">
-                            Libretto Cori
+                            Cori
                         </x-nav-link>
                     @endif
                 </div>
@@ -216,6 +228,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.trasferte.index')" :active="request()->routeIs('admin.trasferte.*')">
                         Gestione Trasferte
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.scanner.index')" :active="request()->routeIs('admin.scanner.index')">
+                        Scanner
                     </x-responsive-nav-link>
                 @else
                     {{-- LINK RESPONSIVE PER UTENTE NORMALE --}}

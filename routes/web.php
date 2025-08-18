@@ -18,6 +18,11 @@ use App\Http\Controllers\Admin\ProdottoController;
 use App\Http\Controllers\Admin\TransazioneController;
 use App\Http\Controllers\Admin\CategoriaSpesaController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\SettoreController;
+use App\Http\Controllers\Admin\CoreografiaController as AdminCoreografiaController;
+use App\Http\Controllers\Admin\ScannerController;
+
+
 
 // Controller Utente
 use App\Http\Controllers\TesseramentoController;
@@ -27,6 +32,7 @@ use App\Http\Controllers\SondaggioController;
 use App\Http\Controllers\CoroController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\CoreografiaController;
 
 
 
@@ -77,6 +83,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout/tesseramento/{tesseramento}', [CheckoutController::class, 'checkoutTesseramento'])->name('checkout.tesseramento');
     Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+    Route::get('/coreografie', [CoreografiaController::class, 'index'])->name('coreografie.index');
+    Route::get('/coreografie/{coreografia}', [CoreografiaController::class, 'show'])->name('coreografie.show');
 
 
 });
@@ -98,6 +106,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('transazioni', TransazioneController::class);
     Route::resource('categorie-spesa', CategoriaSpesaController::class);
     Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::resource('settori', SettoreController::class);
+    Route::resource('coreografie', AdminCoreografiaController::class); // <-- NUOVA RIGA
+    Route::post('/coreografie/{coreografia}/salva-piano', [AdminCoreografiaController::class, 'salvaPiano'])->name('coreografie.salvaPiano');
+    Route::get('/scanner', [ScannerController::class, 'index'])->name('scanner.index');
+
+
 
 
 });

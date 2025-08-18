@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreAnnuncioRequest;
 
 class AnnuncioController extends Controller
 {
@@ -30,25 +31,15 @@ class AnnuncioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAnnuncioRequest $request)
     {
-        // 1. Validiamo i dati in arrivo
-        $validated = $request->validate([
-            'titolo' => 'required|string|max:255',
-            'contenuto' => 'required|string',
-            'in_evidenza' => 'nullable', // Accettiamo il campo se presente
-        ]);
+        $validated = $request->validated();
 
-        // 2. Aggiungiamo l'ID dell'admin che sta creando l'annuncio
         $validated['user_id'] = auth()->id();
-
-        // 3. Gestiamo il valore del checkbox. Se è spuntato, $request->has() sarà true.
         $validated['in_evidenza'] = $request->has('in_evidenza');
 
-        // 4. Creiamo l'annuncio
         \App\Models\Annuncio::create($validated);
 
-        // 5. Reindirizziamo con un messaggio di successo
         return redirect()->route('admin.annunci.index')->with('success', 'Annuncio pubblicato con successo!');
     }
 
@@ -72,16 +63,11 @@ class AnnuncioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreAnnuncioRequest $request, string $id)
     {
         $annuncio = \App\Models\Annuncio::findOrFail($id);
 
-        $validated = $request->validate([
-            'titolo' => 'required|string|max:255',
-            'contenuto' => 'required|string',
-            'in_evidenza' => 'nullable',
-        ]);
-
+        $validated = $request->validated();
         $validated['in_evidenza'] = $request->has('in_evidenza');
 
         $annuncio->update($validated);

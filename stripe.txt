@@ -1,1 +1,5 @@
 stripe listen --forward-to https://gestionale-tifoseria.test/stripe/webhook
+
+Dati carta di credito
+4242 4242 4242 4242
+il resto a piacere
